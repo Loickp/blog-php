@@ -1,0 +1,41 @@
+.header {
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+main {
+    margin-bottom: 50px;
+}
+
+.blog-post {
+    margin-bottom: 30px;
+}
+
+.blog-post img {
+    height: 400px;
+}
+
+aside .card {
+    margin-bottom: 20px;
+}
+
+.card-content {
+    margin-top: 20px;
+}
+
+.header-article {
+    margin-bottom: 30px;
+}
+
+.header-article img {
+    width: 700px;
+    height: 300px;
+}
+
+#drop {
+    text-decoration: none;
+}
+
+.alert-box {
+    margin-top: 30px;
+}
