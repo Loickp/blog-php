@@ -1,6 +1,8 @@
 <?php
     include('../config/db_connect.php');
 
+    $signup_success = 0;
+
     if(isset($_POST['signup'])){
         $username = $_POST['username'];
         $email = $_POST['email'];
@@ -13,7 +15,7 @@
 
         if(mysqli_query($conn, $user_sql)){
             // success
-            echo "Success !";
+            $signup_success = 1;
         } else {
             echo 'query error: '. mysqli_error($conn);
         }
@@ -32,6 +34,17 @@
 <body>
     <?php include('../templates/header.php'); ?>
     <div class="container">
+        <?php if($signup_success == 1): ?>
+            <div class="alert alert-success alert-box" role="alert">
+                <?php 
+                    echo "You are now sign up, you can login !";
+                ?>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        <?php endif; ?>
+
         <h1 class="text-center" id="title">Sign Up</h1>
 
         <form action="signup.php" method="post">

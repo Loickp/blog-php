@@ -1,6 +1,8 @@
 <?php
+    //session_start();
     include('config/db_connect.php');
-
+    session_start();
+    
     $name = $content = $user_name = '';
 
     if(isset($_POST['submit'])){
@@ -32,8 +34,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Add new post</title>
-    <script src="https://cdn.tiny.cloud/1/xv9vpz4nfgsdb1t0b9nk5j0g41zvtsfqdz272o0a7v4087df/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
-    <script>tinymce.init({ selector: '#mytextarea' });</script>
 </head>
 <body>
     <?php include('templates/header.php'); ?>
@@ -51,15 +51,11 @@
             </div>
             <div class="form-group row">
                 <div class="col-2">
-                    <select class="form-control" name="user_name">
-                        <?php foreach($users as $user): ?>
-                            <option value="<?php echo $user['user_id'] ?>"><?php echo $user['user_name'] ?></option>
-                        <?php endforeach; ?>
-                    </select>
+                    <input type="hidden" name="user_name" value="<?php echo $user['user_id']; ?>">
                 </div>
             </div>
             <div class="form-group">
-                <textarea class="form-control" id="mytextarea" rows="30" name="content"></textarea>
+                <textarea class="form-control" id="editor" rows="20" name="content"></textarea>
             </div>
             <div class="form-group">
                 <button type="submit" name="submit" class="btn btn-primary">Add</button>

@@ -1,3 +1,12 @@
+<?php
+    if(isset($_SESSION['username'])) {
+        $user_name = $_SESSION['username'];
+        $u_sql = "SELECT * FROM users WHERE user_name = '$user_name'";
+        $u_result = mysqli_query($conn, $u_sql);
+        $user = mysqli_fetch_assoc($u_result);
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -34,6 +43,11 @@
                             <?php endif ?>
                             <?php if(isset($_SESSION['username'])) : ?>
                                 <a class="dropdown-item" href="#">Profile</a>
+                                <?php if(isset($_SESSION['username'])): ?>
+                                    <?php if($user['admin'] == 1): ?>
+                                        <a class="dropdown-item" href="/blog/dashboard/dashboard.php">Dashboard</a>
+                                    <?php endif; ?>
+                                <?php endif; ?>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="/blog/login/logout.php">Logout</a>
                             <?php endif ?>
