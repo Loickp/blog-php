@@ -1,5 +1,5 @@
 <?php
-    include('config/db_connect.php'); 
+    include('config/db_connect.php');
     session_start();
 
     // Article query
@@ -9,16 +9,9 @@
 
     //mysqli_free_result($post_result);
     //mysqli_close($conn);
-    
-    if(isset($_SESSION['username'])) {
-        $user_name = $_SESSION['username'];
-        $u_sql = "SELECT * FROM users WHERE user_name = '$user_name'";
-        $u_result = mysqli_query($conn, $u_sql);
-        $user = mysqli_fetch_assoc($u_result);
-    }
-    
 
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -46,9 +39,6 @@
         <div class="header">
             <h2>Recent posts</h2>
         </div>
-        <?php if(isset($_SESSION['username'])): ?>
-            <p>Welcome <strong><?php echo $_SESSION['username']; ?></strong></p>
-        <?php endif; ?>
     </div>
 
     <main role="main" class="container">
@@ -57,7 +47,7 @@
                 <?php foreach($posts as $post): ?>
                     <div class="blog-post">
                         <div class="card">
-                            <img src="img.png" class="card-img-top" alt="...">
+                            <img src="upload/<?php echo $post['image_dir'] ?>" class="card-img-top" alt="...">
                             <div class="card-body">
                                 <h5 class="card-title"><?php echo $post['title'] ?></h5>
                                 <h6 class="card-subtitle mb-2 text-muted"><?php echo date("F j, Y", strtotime($post['date_posted'])) ?> by <a href="#"><?php echo $post['user_name'] ?></a></h6>

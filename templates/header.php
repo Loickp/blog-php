@@ -1,4 +1,6 @@
 <?php
+    include('config/db_connect.php'); 
+
     if(isset($_SESSION['username'])) {
         $user_name = $_SESSION['username'];
         $u_sql = "SELECT * FROM users WHERE user_name = '$user_name'";
@@ -42,19 +44,22 @@
                                 <a class="dropdown-item" href="/blog/login/login.php">Login</a>
                             <?php endif ?>
                             <?php if(isset($_SESSION['username'])) : ?>
-                                <a class="dropdown-item" href="#">Profile</a>
+                                <a class="dropdown-item" href="#">Profile (<?php echo $_SESSION['username']; ?>)</a>
                                 <?php if(isset($_SESSION['username'])): ?>
                                     <?php if($user['admin'] == 1): ?>
                                         <a class="dropdown-item" href="/blog/dashboard/dashboard.php">Dashboard</a>
                                     <?php endif; ?>
                                 <?php endif; ?>
+                                <?php if($user['redactor'] == 1): ?>
+                                    <a class="dropdown-item" href="/blog/panel/panel.php">Panel</a>
+                                 <?php endif; ?>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="/blog/login/logout.php">Logout</a>
                             <?php endif ?>
                         </div>
                     </li>
                     <?php if(isset($_SESSION['username'])): ?>
-                        <?php if($user['admin'] == 1): ?>
+                        <?php if($user['admin'] == 1 || $user['redactor'] == 1): ?>
                             <a class="btn btn-success" href="add_post.php">Add post</a>
                         <?php endif; ?>
                     <?php endif; ?>

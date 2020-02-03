@@ -1,13 +1,6 @@
 <?php
-    include('../config/db_connect.php');
+    include('config/db_connect.php');
     session_start();
-
-    if(isset($_SESSION['username'])) {
-        $user_name = $_SESSION['username'];
-        $u_sql = "SELECT * FROM users WHERE user_name = '$user_name'";
-        $u_result = mysqli_query($conn, $u_sql);
-        $user = mysqli_fetch_assoc($u_result);
-    }
 
     // Article query
     $post_sql = 'SELECT * FROM posts INNER JOIN users ON posts.user_id = users.user_id ORDER BY post_id DESC';

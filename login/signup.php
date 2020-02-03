@@ -1,5 +1,6 @@
 <?php
     include('../config/db_connect.php');
+    session_start();
 
     $signup_success = 0;
 

@@ -2,6 +2,8 @@
     include('config/db_connect.php');
     session_start();
 
+    $userid = $_SESSION['user_id'];
+
     // Post detail query
     if(isset($_GET['id'])){
 		$id = mysqli_real_escape_string($conn, $_GET['id']);
@@ -18,7 +20,7 @@
         $edit_sql = "UPDATE posts SET title = '$title', content = '$content' WHERE post_id = $id";
 
         if (mysqli_query($conn, $edit_sql)) {
-            header('Location: dashboard.php');
+            header('Location: panel.php');
         } else {
             echo "Error: " . $edit_sql . "<br>" . mysqli_error($conn);
         }
@@ -29,7 +31,7 @@
         $delete_sql = "DELETE FROM posts WHERE post_id = $id";
 
         if(mysqli_query($conn, $delete_sql)){
-			header('Location: dashboard.php');
+			header('Location: panel.php');
 		} else {
 			echo 'query error: '. mysqli_error($conn);
 		}
@@ -47,29 +49,33 @@
 <body>
     <?php include('../templates/header.php'); ?>
     <?php if(isset($_SESSION['username'])): ?>
-        <?php if($user['admin'] == 1): ?>
-            <div class="container">
-                <div class="header">
-                    <h1>Edit post</h1>
-                </div>
-                <form method="post">
-                    <div class="form-group row">
-                        <div class="col-6">
-                            <input type="text" id="#editor" class="form-control" name="title" value="<?php echo $post['title']; ?>">
+        <?php if($user['admin'] == 1 || $user['redactor'] == 1): ?>
+            <?php if($post['user_id'] == $userid): ?>
+                <div class="container">
+                    <div class="header">
+                        <h1>Edit post</h1>
+                    </div>
+                    <form method="post">
+                        <div class="form-group row">
+                            <div class="col-6">
+                                <input type="text" id="#editor" class="form-control" name="title" value="<?php echo $post['title']; ?>">
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <textarea class="form-control" name="content" rows="20"><?php echo $post['content']; ?></textarea>
-                    </div>
-                    <div class="form-group">
-                        <a href="dashboard.php" class="btn btn-secondary">Close</a>
-                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete-modal">Delete</button>
-                        <button type="submit" name="edit" class="btn btn-primary">Edit</button>
-                    </div>
-                </form>
-            </div>
+                        <div class="form-group">
+                            <textarea class="form-control" name="content" rows="20"><?php echo $post['content']; ?></textarea>
+                        </div>
+                        <div class="form-group">
+                            <a href="panel.php" class="btn btn-secondary">Close</a>
+                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete-modal">Delete</button>
+                            <button type="submit" name="edit" class="btn btn-primary">Edit</button>
+                        </div>
+                    </form>
+                </div>
+            <?php else: ?>
+                <h1>Is not your post !</h1>
+            <?php endif; ?>
         <?php else: ?>
-            <h1>You are not admin !</h1>
+            <h1>Error</h1>
         <?php endif; ?>
      <?php endif; ?>
 
