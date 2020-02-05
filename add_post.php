@@ -10,6 +10,7 @@
         $date = date('Y-m-d-H-i-s');
         $user_name = mysqli_real_escape_string($conn, $_POST['user_name']);
         $content = mysqli_real_escape_string($conn, $_POST['content']);
+        $category = intval($_POST['category']);
 
         // Image upload 
         $target_dir = "upload/";
@@ -31,14 +32,16 @@
         if(array_filter($upload_error)){
             //echo 'errors in form';
 		}  else {
-            $image = $_FILES['image']['name'];
+            $fileInfo = pathinfo($_FILES["image"]["name"]);
+            $image = uniqid() . '.' . $fileInfo['extension'];
+            $image_path = $target_dir . $image;
 
             // create sql
-            $sql = "INSERT INTO posts(title, date_posted, user_id, image_dir, content) VALUES('$name', '$date', '$user_name', '$image', '$content')";
+            $sql = "INSERT INTO posts(title, date_posted, user_id, image_dir, category_id, content) VALUES('$name', '$date', '$user_name', '$image', '$category', '$content')";
 
             if (mysqli_query($conn, $sql)) {
                 // Move into folder : upload
-                move_uploaded_file($_FILES['image']['tmp_name'], $target_file);
+                move_uploaded_file($_FILES['image']['tmp_name'], $image_path);
 
                 header('Location: index.php');
             } else {
@@ -51,6 +54,12 @@
     $sql = 'SELECT * FROM users';
     $result = mysqli_query($conn, $sql);
     $users = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+    // Categories query
+    $cat_sql = "SELECT * FROM categories";
+    $cat_result = mysqli_query($conn, $cat_sql);
+    $cats = mysqli_fetch_all($cat_result, MYSQLI_ASSOC);
+    print_r($cats);
 
 ?>
 
@@ -79,10 +88,20 @@
                 <input type="hidden" name="user_name" value="<?php echo $user['user_id']; ?>">
             </div>
             <div class="form-group">
-                <input type="file" name="image" required>
+                <input type="file" name="image" accept=".jpg, .jpeg, .png" required>
             </div>
             <div class="form-group">
                 <textarea class="form-control" id="editor" rows="20" name="content" required><?php if(isset($_POST['content'])){ echo $_POST['content']; } ?></textarea>
+            </div>
+            <div class="form-group row">
+                <div class="col-2">
+                    <label>Category</label>
+                    <select class="form-control" name="category">
+                        <?php foreach($cats as $cat): ?>
+                            <option value="<?php echo $cat['category_id']; ?>"><?php echo $cat['category_name']; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
             </div>
             <div class="form-group">
                 <button type="submit" name="submit" class="btn btn-primary">Add</button>

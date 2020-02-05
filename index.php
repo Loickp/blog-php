@@ -7,6 +7,10 @@
     $post_result = mysqli_query($conn, $post_sql);
     $posts = mysqli_fetch_all($post_result, MYSQLI_ASSOC);
 
+    $cat_sql = "SELECT * FROM categories";
+    $cat_result = mysqli_query($conn, $cat_sql);
+    $cats = mysqli_fetch_all($cat_result, MYSQLI_ASSOC);
+
     //mysqli_free_result($post_result);
     //mysqli_close($conn);
 
@@ -56,7 +60,7 @@
                             </div>
                         </div>
                     </div>
-                <?php endforeach; ?> 
+                <?php endforeach; ?>
             </div>
             <?php include('templates/sidebar.php'); ?>
         </div>

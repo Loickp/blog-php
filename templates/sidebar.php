@@ -1,3 +1,9 @@
+<?php
+    $cat_sql = "SELECT * FROM categories";
+    $cat_result = mysqli_query($conn, $cat_sql);
+    $cats = mysqli_fetch_all($cat_result, MYSQLI_ASSOC);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,8 +18,8 @@
             <div class="card-body">
                 <h4 class="font-italic">Search</h4>
                 <div class="card-content">
-                    <form class="form-inline">
-                        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                    <form class="form-inline" method="GET" action="search.php">
+                        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="search">
                         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
                     </form>
                 </div>
@@ -25,9 +31,9 @@
                 <h4 class="font-italic">Categories</h4>
                 <div class="card-content">
                     <ol class="list-unstyled">
-                        <li><a href="#">Video games</a></li>
-                        <li><a href="#">Hardware</a></li>
-                        <li><a href="#">Development</a></li>
+                        <?php foreach($cats as $cat): ?>
+                            <li><a href="category.php?id=<?php echo $cat['category_id'] ?>"><?php echo $cat['category_name'] ?></a></li>
+                        <?php endforeach; ?>
                     </ol>
                 </div>
             </div>

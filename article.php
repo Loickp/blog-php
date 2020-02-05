@@ -45,7 +45,7 @@
             <div class="row">
                 <div class="col-md-8 blog-main">
                     <div class="header-article">
-                        <img src="img.png">
+                        <img src="upload/<?php echo $post['image_dir'] ?>" class="card-img-top" alt="...">
                     </div>
                     <div class="article-content">
                         <p>
