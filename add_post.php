@@ -50,16 +50,10 @@
         }
     }
 
-    // Temporary query for users
-    $sql = 'SELECT * FROM users';
-    $result = mysqli_query($conn, $sql);
-    $users = mysqli_fetch_all($result, MYSQLI_ASSOC);
-
     // Categories query
     $cat_sql = "SELECT * FROM categories";
     $cat_result = mysqli_query($conn, $cat_sql);
     $cats = mysqli_fetch_all($cat_result, MYSQLI_ASSOC);
-    print_r($cats);
 
 ?>
 

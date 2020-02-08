@@ -2,8 +2,24 @@
     include('config/db_connect.php');
     session_start();
 
+    // Number page 
+    if (isset($_GET['page'])) {
+        $page = $_GET['page'];
+    } else {
+        $page = 1;
+    }
+    $nb_per_page = 4;
+    $offset = ($page-1) * $nb_per_page;
+
+
+    // Calcul for number of page
+    $total_pages_sql = "SELECT COUNT(*) FROM posts";
+    $result = mysqli_query($conn,$total_pages_sql);
+    $total_rows = mysqli_fetch_array($result)[0];
+    $total_pages = ceil($total_rows / $nb_per_page);
+
     // Article query
-    $post_sql = 'SELECT * FROM posts INNER JOIN users ON posts.user_id = users.user_id ORDER BY post_id DESC';
+    $post_sql = "SELECT * FROM posts INNER JOIN users ON posts.user_id = users.user_id ORDER BY post_id DESC LIMIT $offset, $nb_per_page";
     $post_result = mysqli_query($conn, $post_sql);
     $posts = mysqli_fetch_all($post_result, MYSQLI_ASSOC);
 
@@ -65,6 +81,16 @@
             <?php include('templates/sidebar.php'); ?>
         </div>
       </main>
+
+    <div class="container">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                    <li class="page-item"><a class="page-link" href="?page=<?php echo $i ?>"><?php echo $i ?></a></li>
+                <?php endfor; ?>
+            </ul>
+        </nav>
+    </div>
 
     <script>
         setTimeout(function() { 

@@ -7,17 +7,20 @@
     if(isset($_POST['login'])){
         $username = $_POST['username'];
         $password = $_POST['password'];
-        $passw = md5($password);
 
-        $log_sql = "SELECT user_id, user_name, password FROM users WHERE user_name='$username' AND password='$passw'";
+        $log_sql = "SELECT user_id, user_name, password FROM users WHERE user_name='$username'";
         $result = mysqli_query($conn, $log_sql);
-        $u = mysqli_fetch_assoc($result);
 
         if (mysqli_num_rows($result) == 1) {
-            $_SESSION['username'] = $username;
-            $_SESSION['user_id'] = $u['user_id'];
-            $_SESSION['success'] = "You are now logged in";
-            header('location: /blog/index.php');
+            $u = mysqli_fetch_assoc($result);
+            if(password_verify($password, $u['password'])){
+                $_SESSION['username'] = $username;
+                $_SESSION['user_id'] = $u['user_id'];
+                $_SESSION['success'] = "You are now logged in";
+                header('location: /blog/index.php');
+            } else{
+                $login_error = 1;
+            } 
         } else {
             $login_error = 1;
         }

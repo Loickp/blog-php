@@ -9,7 +9,8 @@
         $email = $_POST['email'];
         $password = $_POST['password'];
 
-        $passw = md5($password);
+        //$passw = md5($password);
+        $passw = password_hash($password, PASSWORD_DEFAULT);
 
         // Users query
         $user_sql = "INSERT INTO users(user_name, email, password) VALUES ('$username', '$email', '$passw')";

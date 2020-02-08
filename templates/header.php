@@ -3,6 +3,7 @@
 
     if(isset($_SESSION['username'])) {
         $user_name = $_SESSION['username'];
+        $user_id = $_SESSION['user_id'];
         $u_sql = "SELECT * FROM users WHERE user_name = '$user_name'";
         $u_result = mysqli_query($conn, $u_sql);
         $user = mysqli_fetch_assoc($u_result);
@@ -44,7 +45,7 @@
                                 <a class="dropdown-item" href="/blog/login/login.php">Login</a>
                             <?php endif ?>
                             <?php if(isset($_SESSION['username'])) : ?>
-                                <a class="dropdown-item" href="#">Profile (<?php echo $_SESSION['username']; ?>)</a>
+                                <a class="dropdown-item" href="/blog/profile/profile.php?id=<?php echo $user_id; ?>">Profile (<?php echo $_SESSION['username']; ?>)</a>
                                 <?php if(isset($_SESSION['username'])): ?>
                                     <?php if($user['admin'] == 1): ?>
                                         <a class="dropdown-item" href="/blog/dashboard/dashboard.php">Dashboard</a>

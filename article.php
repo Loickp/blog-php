@@ -13,8 +13,11 @@
 		$result = mysqli_query($conn, $sql);
         $post = mysqli_fetch_assoc($result);
 
-		mysqli_free_result($result);
-		mysqli_close($conn);
+        // Comments query
+        $comm_sql = "SELECT comments_id, content, date, user_name FROM comments INNER JOIN users ON comments.user_id = users.user_id WHERE post_id = $id ORDER BY comments_id DESC";
+        $comm_result = mysqli_query($conn, $comm_sql);
+        $comments = mysqli_fetch_all($comm_result, MYSQLI_ASSOC);
+        
 	}
 
 ?>
@@ -52,20 +55,39 @@
                             <?php echo $post['content'] ?>
                         </p>
                     </div>
-                    <div class="comment">
-                        <hr>
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">Leave comment</h5>
-                                <form>
-                                    <div class="form-group">
-                                        <textarea class="form-control" name="comment" rows="4"></textarea>
-                                    </div>
-                                    <input class="btn btn-primary" type="submit" value="Submit">
-                                </form>
+                    <hr>
+
+                    <?php if(isset($_SESSION['username'])): ?>
+                        <div class="comment">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Leave comment</h5>
+                                    <form action="comment.php" method="POST">
+                                        <input type="hidden" name="user_name" value="<?php echo $_SESSION['user_id']; ?>">
+                                        <input type="hidden" name="post_id" value="<?php echo $id; ?>">
+                                        <div class="form-group">
+                                            <textarea class="form-control" name="comment" rows="4"></textarea>
+                                        </div>
+                                        <input class="btn btn-primary" type="submit" name="com" value="Submit">
+                                    </form>
+                                </div>
                             </div>
+                            <hr>
+
+                            <?php foreach($comments as $comment): ?>
+                                <div class="comments">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5 class="card-title"><?php echo $comment['user_name'] ?></h5>
+                                            <h6 class="card-subtitle mb-2 text-muted"><?php echo date("F j, Y", strtotime($comment['date'])) ?></h6>
+                                            <p class="card-text"><?php echo $comment['content'] ?></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
                         </div>
-                    </div>
+                    <?php endif; ?>
+
                 </div>
                 <?php include('templates/sidebar.php'); ?>
             </div>

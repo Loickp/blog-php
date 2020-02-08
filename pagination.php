@@ -1,6 +1,5 @@
 <?php
     include('config/db_connect.php');
-    session_start();
 
     if (isset($_GET['page'])) {
         $page = $_GET['page'];
@@ -27,19 +26,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pagination test</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <title>Pagination</title>
 </head>
 <body>
-    <?php include('templates/header.php'); ?>
-
-    <?php foreach($posts as $post): ?>
-        <p><?php echo $post['title'] ?></p>
-    <?php endforeach; ?>
-
-    <ul class="pagination">
-        <?php for ($i = 1; $i <= $total_pages; $i++): ?>
-            <a href="?page=<?php echo $i ?>"><?php echo $i ?></a>
-        <?php endfor; ?>
-    </ul>
+    <div class="container">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                    <li class="page-item"><a class="page-link" href="?page=<?php echo $i ?>"><?php echo $i ?></a></li>
+                <?php endfor; ?>
+            </ul>
+        </nav>
+    </div>
 </body>
 </html>
